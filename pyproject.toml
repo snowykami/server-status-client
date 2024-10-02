@@ -19,7 +19,7 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [project.scripts]
-server-status = "server_status.__main__:main"
+server-status = "server_status.__main__"
 
 [tool.pdm]
 distribution = true
