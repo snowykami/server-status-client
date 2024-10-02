@@ -1,10 +1,10 @@
-import socket
 import sys
 
 from server_status.api import *
 from server_status.cmd_parser import server_status_alc
 
-if __name__ == "__main__":
+
+def main():
     raw_msg = "server_status " + " ".join(sys.argv[1:])
     arp = server_status_alc.parse(raw_msg)
 
@@ -35,3 +35,7 @@ if __name__ == "__main__":
 
     else:
         log("Unknown command, use 'server_status --help' for help/未知命令或参数错误，请使用 'server_status --help' 获取帮助")
+
+
+if __name__ == "__main__":
+    main()
