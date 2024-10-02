@@ -69,7 +69,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=sudo server-status <server> <token> <id> run  # 请替换为实际参数
+ExecStart=server-status <server> <token> <id> run  # 请替换为实际参数
 Restart=on-failure
 RestartSec=10
 
