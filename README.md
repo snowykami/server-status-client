@@ -1,4 +1,3 @@
-
 <div align="center">
 
 # server-status-client
@@ -22,12 +21,9 @@ _✨ 服务器状态 - 客户端 ✨_
 
 ## 💿 安装
 
-<details open>
-<summary>使用 pip 安装(确保包路径在环境变量下)</summary>
+使用 pip 安装(确保包路径在环境变量下)
 
     pip install server-status
-
-</details>
 
 Debian系请使用pipx安装
 
@@ -35,6 +31,8 @@ Debian系请使用pipx安装
 sudo apt install pipx
 sudo pipx install server-status
 ```
+
+若出现环境问题，请从 Actions 下载构建好的二进制文件
 
 ## 🎉 使用
 
@@ -44,6 +42,7 @@ sudo pipx install server-status
 - `server-status <server> <token> <id> rm` - 从服务端移除主机
 
 #### 可选项
+
 - `-n|--name` - 设置主机名称
 - `--labels` - 设置主机标签
 - `--interval` - 设置上报间隔
@@ -51,6 +50,7 @@ sudo pipx install server-status
 - `--link` - 设置前端点击跳转链接
 
 #### 示例
+
 ```shell
 server_status https://status.liteyuki.icu 114514 myhost run -n "MyHost" --labels "标签1,标签2" --interval 5 --location "Chongqing" --link "https://example.com"
 ```
@@ -58,7 +58,9 @@ server_status https://status.liteyuki.icu 114514 myhost run -n "MyHost" --labels
 ## 📝 其他
 
 ### 开机启动
+
 执行以下命令
+
 ```shell
 sudo pipx ensurepath  # 确保pipx路径在环境变量下
 
