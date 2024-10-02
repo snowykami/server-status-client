@@ -40,8 +40,8 @@ pipx install server-status
 
 ### 命令
 
-- `server_status <server> <token> <id> run` - 运行客户端
-- `server_status <server> <token> <id> rm` - 从服务端移除主机
+- `server-status <server> <token> <id> run` - 运行客户端
+- `server-status <server> <token> <id> rm` - 从服务端移除主机
 
 #### 可选项
 - `-n|--name` - 设置主机名称
@@ -69,7 +69,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=sudo server_status <server> <token> <id> run  # 请替换为实际参数
+ExecStart=sudo server-status <server> <token> <id> run  # 请替换为实际参数
 Restart=on-failure
 RestartSec=10
 
