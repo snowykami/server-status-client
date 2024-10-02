@@ -106,17 +106,15 @@ class Api:
         """
         self.headers.update(self.format(headers))
 
-    def format(self, obj: str | tuple[str, ...] | dict[str, Any]):
+    def format(self, obj: str | list[str] | dict[str, Any]) -> str | list[str] | dict[str, Any]:
         if isinstance(obj, str):
             obj = obj.format(**self.variables)
         elif isinstance(obj, dict):
             for key in obj:
                 obj[key] = self.format(obj[key])
-        elif isinstance(obj, (list, tuple)):
+        elif isinstance(obj, list):
             for i in range(len(obj)):
                 obj[i] = self.format(obj[i])
-        else:
-            pass
         return obj
 
 
