@@ -83,4 +83,4 @@ sudo systemctl start server-status-client
 
 ### 服务端
 
-请在中心服务器上部署 [server-status-server](./../server-status-server)
+请在中心服务器上部署 [server-status-server](https://github.com/snowykami/server-status-server)
