@@ -33,7 +33,7 @@ Debian系请使用pipx安装
 
 ```bash
 sudo apt install pipx
-pipx install server-status
+sudo pipx install server-status
 ```
 
 ## 🎉 使用
@@ -60,6 +60,8 @@ server_status https://status.liteyuki.icu 114514 myhost run -n "MyHost" --labels
 ### 开机启动
 执行以下命令
 ```shell
+sudo pipx ensurepath  # 确保pipx路径在环境变量下
+
 sudo touch /etc/systemd/system/server-status-client.service
 
 sudo bash -c 'cat <<EOF > /etc/systemd/system/server-status-client.service
