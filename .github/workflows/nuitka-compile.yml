@@ -28,7 +28,6 @@ jobs:
         with:
           python-version: '3.11' # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: ${{ matrix.arch }}
-          cache: 'pdm' # Optional. Options are 'none', 'pdm', 'pip', or 'all'. Default is 'all'
 
       - name: Install Dependencies
         run: |
