@@ -32,7 +32,7 @@ _✨ 服务器状态 - 客户端 ✨_
 Debian系请使用pipx安装
 
 ```bash
-sudo apt install python3-pipx
+sudo apt install pipx
 pipx install server-status
 ```
 
