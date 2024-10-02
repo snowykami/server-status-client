@@ -2,15 +2,15 @@ name: Compile
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - main
 
 jobs:
   build:
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
-        arch: [amd64, arm64, arm, 386]
+        os: [ macos-latest, ubuntu-latest, windows-latest ]
+        arch: [ amd64, arm64, arm, 386 ]
 
     runs-on: ${{ matrix.os }}
 
