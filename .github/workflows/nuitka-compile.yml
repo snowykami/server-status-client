@@ -28,6 +28,8 @@ jobs:
         with:
           python-version: '3.11' # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: ${{ matrix.arch }}
+          cache: 'pip'
+
 
       - name: Install Dependencies
         run: |
