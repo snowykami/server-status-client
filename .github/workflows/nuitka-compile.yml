@@ -10,10 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
-        arch: [ x64, x86, arm64 ]
-        exclude:
-          - os: ubuntu-latest
-            arch: x86
+        arch: [ x64, arm64 ]
 
     runs-on: ${{ matrix.os }}
 
@@ -24,9 +21,11 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          python-version: '3.11'
           architecture: ${{ matrix.arch }}
           cache: 'pip'
+          cache-dependency-path: |
+            **/requirements*.txt
 
 
       - name: Install Dependencies
