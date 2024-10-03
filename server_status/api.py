@@ -136,7 +136,7 @@ class Client:
         self.link = link
         self.interval = interval
 
-        self.start_time = int(time.clock())
+        self.start_time = int(psutil.boot_time())
         self.hardware = Hardware()
 
         log("Client initialized",
