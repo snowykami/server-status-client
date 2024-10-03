@@ -6,6 +6,7 @@ from server_status.cmd_parser import server_status_alc
 
 def main():
     raw_msg = "server_status " + " ".join(sys.argv[1:])
+    print(raw_msg)
     arp = server_status_alc.parse(raw_msg)
 
     if arp.query("run"):
