@@ -85,6 +85,13 @@ sudo systemctl enable server-status-client
 sudo systemctl start server-status-client
 ```
 
+### 更新
+
+```shell
+git pull
+sudo systemctl restart server-status-client
+```
+
 ### 服务端
 
 请在中心服务器上部署 [server-status-server](https://github.com/snowykami/server-status-server)
