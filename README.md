@@ -32,7 +32,15 @@ sudo apt install pipx
 sudo pipx install server-status
 ```
 
-若出现环境问题，请从 Actions 下载构建好的二进制文件
+若出现环境问题，手动部署
+```yaml
+git clone https://github.com/snowykami/server-status-client.git
+python -m venv .venv
+source .venv/bin/activate
+pip install pdm
+pdm install
+python main.py --your-args
+```
 
 ## 🎉 使用
 
