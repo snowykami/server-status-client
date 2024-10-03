@@ -120,7 +120,7 @@ class Api:
 
 class Client:
     def __init__(self, addr: str, token: str, client_id: str, name: str = "", location: str = "", labels: list[str] = [], link: str = "",
-                 interval: int = 5):
+                 interval: int = 2):
         self.api = Api(addr, {"token": token, "id": client_id})
         self.api = self.api.group("/client")
         self.api.add_headers(Authorization="{token}")
