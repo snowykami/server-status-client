@@ -224,7 +224,7 @@ class Client:
                 self.hardware.mem_used = psutil.virtual_memory().used
                 self.hardware.swap_total = psutil.swap_memory().total
                 self.hardware.swap_used = psutil.swap_memory().used
-                self.hardware.cpu_cores = psutil.cpu_count()
+                self.hardware.cpu_cores = psutil.cpu_count(logical=False)
                 self.hardware.cpu_logics = psutil.cpu_count(logical=True)
                 for part in psutil.disk_partitions():
                     try:

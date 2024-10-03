@@ -122,6 +122,8 @@ celerybeat.pid
 *.sage.py
 
 pdm.lock
+start.cmd
+start.sh
 
 # Environments
 .env
