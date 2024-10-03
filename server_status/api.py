@@ -136,6 +136,7 @@ class Client:
         self.link = link
         self.interval = interval
 
+        self.start_time = int(time.clock())
         self.hardware = Hardware()
 
         log("Client initialized",
@@ -187,6 +188,7 @@ class Client:
                 "labels": self.labels,
                 "location": self.location,
                 "uptime": int(time.time() - self.start_time),
+                "start_time": self.start_time,  # 系统启动的时间
                 "link": self.link,
                 "observed_at": int(time.time()),
             },
