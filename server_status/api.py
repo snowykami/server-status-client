@@ -6,6 +6,8 @@ from typing import Any
 import psutil
 import requests
 
+excluded_partition_prefix = ("/var", "/boot", "/run", "/proc", "/sys", "/dev", "/tmp", "/snap")
+
 
 def log(*args):
     # 在输出前加上时间
@@ -229,6 +231,10 @@ class Client:
                 for part in psutil.disk_partitions():
                     try:
                         usage = psutil.disk_usage(part.mountpoint)
+
+                        if part.mountpoint.startswith(excluded_partition_prefix):
+                            continue
+
                         self.hardware.disks[part.device] = {
                             "total": usage.total,
                             "used": usage.used,

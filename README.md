@@ -90,6 +90,9 @@ sudo systemctl start server-status-client
 ```shell
 git pull
 sudo systemctl restart server-status-client
+#
+git pull
+systemctl restart server-status-client
 ```
 
 ### 服务端
