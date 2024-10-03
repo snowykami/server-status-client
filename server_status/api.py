@@ -232,7 +232,7 @@ class Client:
                     try:
                         usage = psutil.disk_usage(part.mountpoint)
 
-                        if part.mountpoint.startswith(excluded_partition_prefix):
+                        if part.mountpoint.startswith(excluded_partition_prefix) or usage.total == 0:
                             continue
 
                         self.hardware.disks[part.device] = {
