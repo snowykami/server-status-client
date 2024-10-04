@@ -143,7 +143,6 @@ class Client:
             f"Name: {self.name}({self.client_id}), Location: {self.location}, Labels: {self.labels}")
 
     def start(self):
-        self.start_time = time.time()
         self.observe()
 
         while True:
