@@ -242,6 +242,9 @@ class Client:
                             continue
 
                         self.hardware.disks[part.device] = {
+                            "mountpoint": part.mountpoint,
+                            "device": part.device,
+                            "fstype": part.fstype,
                             "total": usage.total,
                             "used": usage.used,
                         }
