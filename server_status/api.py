@@ -6,6 +6,8 @@ from typing import Any
 import psutil
 import requests
 
+from server_status.timezone import get_timezone
+
 excluded_partition_prefix = ("/var", "/boot", "/run", "/proc", "/sys", "/dev", "/tmp", "/snap")
 
 
@@ -38,6 +40,8 @@ class Hardware:
     cpu_percent: float = psutil.cpu_percent()
 
     disks: dict[str, dict[str, int]] = {}
+
+    timezone: str = get_timezone()
 
     net_up: int = 0
     net_down: int = 0
@@ -190,6 +194,7 @@ class Client:
                 "start_time": int(self.start_time),  # 系统启动的时间
                 "link": self.link,
                 "observed_at": int(time.time()),
+                "timezone": self.hardware.timezone,
             },
             "hardware": {
                 "mem": {
