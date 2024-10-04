@@ -187,6 +187,8 @@ class Client:
                 "os": {
                     "name": platform.system(),
                     "version": platform.version(),
+                    "machine": platform.machine(),
+                    "release": platform.release(),
                 },
                 "labels": self.labels,
                 "location": self.location,
