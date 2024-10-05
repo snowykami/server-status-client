@@ -57,8 +57,8 @@ _✨ 服务器状态 - 客户端 ✨_
 
 ### 命令
 
-- `server-status <server> <token> <id> run` - 运行客户端
-- `server-status <server> <token> <id> rm` - 从服务端移除主机
+- `python main.py <server> <token> <id> run` - 运行客户端
+- `python.main.py <server> <token> <id> rm` - 从服务端移除主机
 
 #### 可选项
 
@@ -71,7 +71,7 @@ _✨ 服务器状态 - 客户端 ✨_
 #### 示例
 
 ```shell
-server_status https://status.liteyuki.icu 114514 myhost run -n "MyHost" --labels "标签1,标签2" --interval 5 --location "Chongqing" --link "https://example.com"
+python main.py https://status.liteyuki.icu 114514 myhost run -n "MyHost" --labels "标签1,标签2" --interval 5 --location "Chongqing" --link "https://example.com"
 ```
 
 ## 📝 其他
