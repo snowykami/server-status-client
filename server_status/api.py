@@ -20,7 +20,7 @@ try:
         for line in os_release.split("\n"):
             if line.startswith("NAME="):
                 os_name = line.split("=")[1].replace('"', '')
-            elif line.startswith("VERSION="):
+            elif line.startswith("VERSION_ID="):
                 os_version = line.split("=")[1].replace('"', '')
 except FileNotFoundError:
     os_name = platform.system()
