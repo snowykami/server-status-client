@@ -10,6 +10,22 @@ from server_status.timezone import get_timezone
 
 excluded_partition_prefix = ("/var", "/boot", "/run", "/proc", "/sys", "/dev", "/tmp", "/snap")
 
+os_name = ""  # linux下为发行版名称，windows下为Windows
+os_version = ""  # linux下为发行版版本，windows下为Windows版本
+try:
+    # read /etc/os-release
+    with open("/etc/os-release") as f:
+        os_release = f.read()
+        # 找到NAME=和VERSION=的行
+        for line in os_release.split("\n"):
+            if line.startswith("NAME="):
+                os_name = line.split("=")[1]
+            elif line.startswith("VERSION="):
+                os_version = line.split("=")[1]
+except FileNotFoundError:
+    os_name = platform.system()
+    os_version = platform.release()
+
 
 def log(*args):
     # 在输出前加上时间
@@ -29,6 +45,7 @@ def get_network_speed(interval) -> tuple[int, int]:
 
 
 class Hardware:
+    os_release: str = ""
     mem_total: int = psutil.virtual_memory().total
     mem_used: int = psutil.virtual_memory().used
 
@@ -185,10 +202,10 @@ class Client:
                 "id": self.client_id,
                 "name": self.name,
                 "os": {
-                    "name": platform.system(),
-                    "version": platform.version(),
-                    "machine": platform.machine(),
-                    "release": platform.release(),
+                    "name": platform.system(),  # 系统类型 linux|windows|darwin
+                    "version": os_name + os_version,  # 系统版本复杂描述 #1 SMP PREEMPT_DYNAMIC Fri Sep 13 10:42:50 UTC 2024 (5c05eeb)
+                    "machine": platform.machine(),  # 机器类型 x86_64
+                    "release": os_version,  # 系统版本
                 },
                 "labels": self.labels,
                 "location": self.location,
