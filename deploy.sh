@@ -100,4 +100,3 @@ systemctl enable server-status-client
 systemctl start server-status-client
 
 echo "server-status-client installed successfully"
-

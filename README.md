@@ -21,25 +21,27 @@ _✨ 服务器状态 - 客户端 ✨_
 
 ## 💿 安装
 
-使用 pip 安装(确保包路径在环境变量下)
+- Linux 可使用脚本安装，带自动部署和自启动
 
-    pip install server-status
-
-Debian系请使用pipx安装
-
-```bash
-sudo apt install pipx
-sudo pipx install server-status
+```shell
+curl -sSL https://raw.githubusercontent.com/snowykami/server-status-client/refs/heads/main/deploy.sh | sudo bash
 ```
 
-若出现环境问题，手动部署
-```yaml
-git clone https://github.com/snowykami/server-status-client.git
-python -m venv .venv
-source .venv/bin/activate
+- 或手动部署
+
+```shell
+# 克隆仓库
+git clone https://github.com/snowykami/server-status-client
+cd server-status-client
+
+# 配置环境
+python3 -m venv venv
+source venv/bin/activate
+# 安装依赖
 pip install pdm
 pdm install
-python main.py --your-args
+
+# 如需自启动请自行添加到系统服务
 ```
 
 ## 🎉 使用
