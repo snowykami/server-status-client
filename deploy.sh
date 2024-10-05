@@ -74,7 +74,7 @@ echo "Creating the systemd service"
 
 # generate random id
 # shellcheck disable=SC2002
-id=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+id=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
 
 bash -c "cat <<EOF > /etc/systemd/system/server-status-client.service
 [Unit]
