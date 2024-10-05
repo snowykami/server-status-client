@@ -67,7 +67,7 @@ echo "venv created successfully"
 
 # install the required packages
 echo "Installing the required packages"
-$python_exe -m pip install pdm -i https://pypi.tuna.tsinghua.edu.cn/simple
+$python_exe -m pip install pdm -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
 $python_exe -m pdm install
 
 # create the systemd service
