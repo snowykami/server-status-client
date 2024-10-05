@@ -19,9 +19,9 @@ try:
         # 找到NAME=和VERSION=的行
         for line in os_release.split("\n"):
             if line.startswith("NAME="):
-                os_name = line.split("=")[1]
+                os_name = line.split("=")[1].replace('"', '')
             elif line.startswith("VERSION="):
-                os_version = line.split("=")[1]
+                os_version = line.split("=")[1].replace('"', '')
 except FileNotFoundError:
     os_name = platform.system()
     os_version = platform.release()
