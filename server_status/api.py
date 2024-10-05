@@ -26,6 +26,8 @@ except FileNotFoundError:
     os_name = platform.system()
     os_version = platform.release()
 
+print("Current OS:", os_name, os_version)
+
 
 def log(*args):
     # 在输出前加上时间
