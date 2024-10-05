@@ -19,6 +19,10 @@ _✨ 服务器状态 - 客户端 ✨_
 
 服务器状态的客户端命令行工具
 
+- 跨平台支持
+- 自动上报服务器状态
+- 支持自定义标签、地域、链接等信息
+
 ## 💿 安装
 
 - Linux 可使用脚本安装，带自动部署和自启动
@@ -69,40 +73,13 @@ server_status https://status.liteyuki.icu 114514 myhost run -n "MyHost" --labels
 
 ### 开机启动
 
-执行以下命令
-
-```shell
-sudo pipx ensurepath  # 确保pipx路径在环境变量下
-
-sudo touch /etc/systemd/system/server-status-client.service
-
-sudo bash -c 'cat <<EOF > /etc/systemd/system/server-status-client.service
-[Unit]
-Description=Server Status Client
-After=network-online.target
-
-[Service]
-Type=simple
-ExecStart=server-status <server> <token> <id> run  # 请替换为实际参数
-Restart=on-failure
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-EOF'
-
-sudo systemctl enable server-status-client
-sudo systemctl start server-status-client
-```
+- 安装脚本已自动添加到系统服务
 
 ### 更新
 
 ```shell
 git pull
 sudo systemctl restart server-status-client
-#
-git pull
-systemctl restart server-status-client
 ```
 
 ### 服务端
