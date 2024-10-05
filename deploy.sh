@@ -10,7 +10,7 @@ fi
 install_dir="/opt"
 echo -n "Install directory? (default: $install_dir/server-status-client): " && read -r install_dir_input
 if [ -n "$install_dir_input" ]; then
-    install_dir="$install_dir_input";
+    install_dir="$install_dir_input"
 fi
 
 # check server
