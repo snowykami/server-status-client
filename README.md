@@ -31,7 +31,7 @@ _✨ 服务器状态 - 客户端 ✨_
     ```shell
     sudo bash -c "$(curl -sSL https://raw.githubusercontent.com/snowykami/server-status-client/refs/heads/main/deploy.sh)"
     ```
-    如果位于中国大陆，可使用国内镜像
+    如果位于中国大陆无法访问GitHub，可使用中国版脚本
     ```shell
     sudo bash -c "$(curl -sSL https://git.liteyuki.icu/snowykami/server-status-client/raw/branch/main/deploy-cn.sh)"
     ```
