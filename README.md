@@ -28,26 +28,30 @@ _✨ 服务器状态 - 客户端 ✨_
 
 - Linux 可使用脚本安装，带自动部署和自启动
 
-```shell
-sudo bash -c "$(curl -sSL https://raw.githubusercontent.com/snowykami/server-status-client/refs/heads/main/deploy.sh)"
-```
+    ```shell
+    sudo bash -c "$(curl -sSL https://raw.githubusercontent.com/snowykami/server-status-client/refs/heads/main/deploy.sh)"
+    ```
+    如果无法访问 GitHub，可以使用以下地址
+    ```shell
+    sudo bash -c "$(curl -sSL https://git.liteyuki.icu/snowykami/server-status-client/raw/branch/main/deploy.sh)"
+    ```
 
 - 或手动部署
 
-```shell
-# 克隆仓库
-git clone https://github.com/snowykami/server-status-client
-cd server-status-client
-
-# 配置环境
-python3 -m venv venv
-source venv/bin/activate
-# 安装依赖
-pip install pdm
-pdm install
-
-# 如需自启动请自行添加到系统服务
-```
+    ```shell
+    # 克隆仓库
+    git clone https://github.com/snowykami/server-status-client
+    cd server-status-client
+    
+    # 配置环境
+    python3 -m venv venv
+    source venv/bin/activate
+    # 安装依赖
+    pip install pdm
+    pdm install
+    
+    # 如需自启动请自行添加到系统服务
+    ```
 
 ## 🎉 使用
 
