@@ -24,7 +24,7 @@ _✨ 服务器状态 - 客户端 ✨_
 - Linux 可使用脚本安装，带自动部署和自启动
 
 ```shell
-curl -sSL https://raw.githubusercontent.com/snowykami/server-status-client/refs/heads/main/deploy.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/snowykami/server-status-client/refs/heads/main/deploy.sh -o /tmp/deploy.sh && sudo bash /tmp/deploy.sh && rm /tmp/deploy.sh
 ```
 
 - 或手动部署

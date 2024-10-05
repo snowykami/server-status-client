@@ -65,7 +65,7 @@ fi
 echo "venv created successfully"
 
 # activate the virtual environment
-
+source "$python_exe"
 
 # install the required packages
 echo "Installing the required packages"
@@ -79,21 +79,21 @@ echo "Creating the systemd service"
 # shellcheck disable=SC2002
 id=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
-#bash -c "cat <<EOF > /etc/systemd/system/server-status-client.service
-#[Unit]
-#Description=Server Status Client
-#After=network-online.target
-#
-#[Service]
-#Type=simple
-#ExecStart=$install_dir/server-status-client/venv/bin/python main.py $server $token $id run -n $hostname --labels $labels --location $location
-#WorkingDirectory=$install_dir/server-status-client
-#Restart=on-failure
-#RestartSec=10
-#
-#[Install]
-#WantedBy=multi-user.target
-#EOF"
+bash -c "cat <<EOF > /etc/systemd/system/server-status-client.service
+[Unit]
+Description=Server Status Client
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=$install_dir/server-status-client/venv/bin/python main.py $server $token $id run -n $hostname --labels $labels --location $location
+WorkingDirectory=$install_dir/server-status-client
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF"
 
 # enable and start the service
 systemctl enable server-status-client
