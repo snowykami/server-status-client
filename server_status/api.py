@@ -144,7 +144,8 @@ class Api:
 
 
 class Client:
-    def __init__(self, addr: str, token: str, client_id: str, name: str = "", location: str = "", labels: list[str] = [], link: str = "",
+    def __init__(self, addr: str, token: str, client_id: str, name: str = "", location: str = "",
+                 labels: list[str] = [], link: str = "",
                  interval: int = 2):
         self.api = Api(addr, {"token": token, "id": client_id})
         self.api = self.api.group("/client")
@@ -167,7 +168,6 @@ class Client:
 
     def start(self):
         self.observe()
-
         while True:
             try:
                 resp = self.get_ping()
@@ -205,7 +205,8 @@ class Client:
                 "name": self.name,
                 "os": {
                     "name": platform.system(),  # 系统类型 linux|windows|darwin
-                    "version": os_name + os_version,  # 系统版本复杂描述 #1 SMP PREEMPT_DYNAMIC Fri Sep 13 10:42:50 UTC 2024 (5c05eeb)
+                    "version": os_name + os_version,
+                    # 系统版本复杂描述 #1 SMP PREEMPT_DYNAMIC Fri Sep 13 10:42:50 UTC 2024 (5c05eeb)
                     "machine": platform.machine(),  # 机器类型 x86_64
                     "release": os_version,  # 系统版本
                 },
@@ -249,33 +250,36 @@ class Client:
 
         def _observe():
             while True:
-                self.hardware.mem_total = psutil.virtual_memory().total
-                self.hardware.mem_used = psutil.virtual_memory().used
-                self.hardware.swap_total = psutil.swap_memory().total
-                self.hardware.swap_used = psutil.swap_memory().used
-                self.hardware.cpu_cores = psutil.cpu_count(logical=False)
-                self.hardware.cpu_logics = psutil.cpu_count(logical=True)
-                for part in psutil.disk_partitions():
-                    try:
-                        usage = psutil.disk_usage(part.mountpoint)
+                try:
+                    self.hardware.mem_total = psutil.virtual_memory().total
+                    self.hardware.mem_used = psutil.virtual_memory().used
+                    self.hardware.swap_total = psutil.swap_memory().total
+                    self.hardware.swap_used = psutil.swap_memory().used
+                    self.hardware.cpu_cores = psutil.cpu_count(logical=False)
+                    self.hardware.cpu_logics = psutil.cpu_count(logical=True)
+                    for part in psutil.disk_partitions():
+                        try:
+                            usage = psutil.disk_usage(part.mountpoint)
 
-                        if part.mountpoint.startswith(excluded_partition_prefix) or usage.total == 0:
-                            continue
+                            if part.mountpoint.startswith(excluded_partition_prefix) or usage.total == 0:
+                                continue
 
-                        self.hardware.disks[part.device] = {
-                            "mountpoint": part.mountpoint,
-                            "device": part.device,
-                            "fstype": part.fstype,
-                            "total": usage.total,
-                            "used": usage.used,
-                        }
-                    except:
-                        pass
-                self.hardware.cpu_percent = psutil.cpu_percent(1)
-                self.hardware.net_up, self.hardware.net_down = get_network_speed(1)
-                log("Observed")
+                            self.hardware.disks[part.device] = {
+                                "mountpoint": part.mountpoint,
+                                "device": part.device,
+                                "fstype": part.fstype,
+                                "total": usage.total,
+                                "used": usage.used,
+                            }
+                        except:
+                            pass
+                    self.hardware.cpu_percent = psutil.cpu_percent(1)
+                    self.hardware.net_up, self.hardware.net_down = get_network_speed(1)
+                    log("Observed")
+                except Exception as e:
+                    log(f"Failed to observe: {e}")
 
-        threading.Thread(target=_observe, daemon=True).start()
+        threading.Thread(target=_observe).start()
 
     def remove(self, client_id) -> requests.Response:
         return self.api.delete("/host", data={"id": client_id})
