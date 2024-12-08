@@ -8,9 +8,20 @@ import requests
 
 from server_status.timezone import get_timezone
 
-excluded_partition_prefix = ("/var", "/boot", "/run", "/proc", "/sys", "/dev", "/tmp", "/snap")
+excluded_partition_prefix = (
+    "/var",
+    "/boot",
+    "/run",
+    "/proc",
+    "/sys",
+    "/dev",
+    "/tmp",
+    "/snap",
+)
 
-os_name = ""  # linux下为发行版名称，windows下为Windows
+include_partition_prefix_mac = ("/Volumes",)
+
+os_name = ""  # linux下为发行版名称，windows下为Windows， macOS下为Darwin
 os_version = ""  # linux下为发行版版本，windows下为Windows版本
 try:
     # read /etc/os-release
@@ -19,9 +30,9 @@ try:
         # 找到NAME=和VERSION=的行
         for line in os_release.split("\n"):
             if line.startswith("NAME="):
-                os_name = line.split("=")[1].replace('"', '')
+                os_name = line.split("=")[1].replace('"', "")
             elif line.startswith("VERSION_ID="):
-                os_version = line.split("=")[1].replace('"', '')
+                os_version = line.split("=")[1].replace('"', "")
 except FileNotFoundError:
     os_name = platform.system()
     os_version = platform.release()
@@ -131,7 +142,9 @@ class Api:
         """
         self.headers.update(self.format(headers))
 
-    def format(self, obj: str | list[str] | dict[str, Any]) -> str | list[str] | dict[str, Any]:
+    def format(
+        self, obj: str | list[str] | dict[str, Any]
+    ) -> str | list[str] | dict[str, Any]:
         if isinstance(obj, str):
             obj = obj.format(**self.variables)
         elif isinstance(obj, dict):
@@ -144,9 +157,17 @@ class Api:
 
 
 class Client:
-    def __init__(self, addr: str, token: str, client_id: str, name: str = "", location: str = "",
-                 labels: list[str] = [], link: str = "",
-                 interval: int = 2):
+    def __init__(
+        self,
+        addr: str,
+        token: str,
+        client_id: str,
+        name: str = "",
+        location: str = "",
+        labels: list[str] = [],
+        link: str = "",
+        interval: int = 2,
+    ):
         self.api = Api(addr, {"token": token, "id": client_id})
         self.api = self.api.group("/client")
         self.api.add_headers(Authorization="{token}")
@@ -160,14 +181,69 @@ class Client:
         self.link = link
         self.interval = interval
 
-        self.start_time = psutil.boot_time()
+        self.start_time: float = psutil.boot_time()
+
         self.hardware = Hardware()
 
-        log("Client initialized",
-            f"Name: {self.name}({self.client_id}), Location: {self.location}, Labels: {self.labels}")
+        log(
+            "Client initialized",
+            f"Name: {self.name}({self.client_id}), Location: {self.location}, Labels: {self.labels}",
+        )
 
     def start(self):
-        self.observe()
+        threading.Thread(target=self._start_obs, daemon=True).start()
+        threading.Thread(target=self._start_post, daemon=True).start()
+
+    def _start_obs(self):
+        """启动监控记录线程"""
+        while True:
+            try:
+                self.hardware.mem_total = psutil.virtual_memory().total
+                self.hardware.mem_used = psutil.virtual_memory().used
+                self.hardware.swap_total = psutil.swap_memory().total
+                self.hardware.swap_used = psutil.swap_memory().used
+                self.hardware.cpu_cores = psutil.cpu_count(logical=False)
+                self.hardware.cpu_logics = psutil.cpu_count(logical=True)
+                for part in psutil.disk_partitions():
+                    try:
+                        usage = psutil.disk_usage(part.mountpoint)
+
+                        if (
+                            (
+                                platform.system() == "linux"
+                                and (
+                                    part.mountpoint.startswith(
+                                        excluded_partition_prefix
+                                    )
+                                )
+                            )
+                            or (
+                                platform.system() == "darwin"
+                                and not part.mountpoint.startswith(
+                                    include_partition_prefix_mac
+                                )
+                            )
+                            or usage.total == 0
+                        ):
+                            continue
+
+                        self.hardware.disks[part.device] = {
+                            "mountpoint": part.mountpoint,
+                            "device": part.device,
+                            "fstype": part.fstype,
+                            "total": usage.total,
+                            "used": usage.used,
+                        }
+                    except:
+                        pass
+                self.hardware.cpu_percent = psutil.cpu_percent(1)
+                self.hardware.net_up, self.hardware.net_down = get_network_speed(1)
+                log("Observed")
+            except Exception as e:
+                log(f"Failed to observe: {e}")
+
+    def _start_post(self):
+        """启动上报进程"""
         while True:
             try:
                 resp = self.get_ping()
@@ -175,9 +251,13 @@ class Client:
                     log(f"Connected to server {self.addr}")
                     break
                 else:
-                    log(f"Failed to connect to server {self.addr}, retrying in 5 seconds: {resp.text}")
+                    log(
+                        f"Failed to connect to server {self.addr}, retrying in 5 seconds: {resp.text}"
+                    )
             except Exception as e:
-                log(f"Failed to connect to server {self.addr}, retrying in 5 seconds: {e}")
+                log(
+                    f"Failed to connect to server {self.addr}, retrying in 5 seconds: {e}"
+                )
             time.sleep(5)
 
         while True:
@@ -240,46 +320,6 @@ class Client:
                 },
             },
         }
-
-    def observe(self):
-        """
-        观察硬件状态并更新
-        Returns:
-
-        """
-
-        def _observe():
-            while True:
-                try:
-                    self.hardware.mem_total = psutil.virtual_memory().total
-                    self.hardware.mem_used = psutil.virtual_memory().used
-                    self.hardware.swap_total = psutil.swap_memory().total
-                    self.hardware.swap_used = psutil.swap_memory().used
-                    self.hardware.cpu_cores = psutil.cpu_count(logical=False)
-                    self.hardware.cpu_logics = psutil.cpu_count(logical=True)
-                    for part in psutil.disk_partitions():
-                        try:
-                            usage = psutil.disk_usage(part.mountpoint)
-
-                            if part.mountpoint.startswith(excluded_partition_prefix) or usage.total == 0:
-                                continue
-
-                            self.hardware.disks[part.device] = {
-                                "mountpoint": part.mountpoint,
-                                "device": part.device,
-                                "fstype": part.fstype,
-                                "total": usage.total,
-                                "used": usage.used,
-                            }
-                        except:
-                            pass
-                    self.hardware.cpu_percent = psutil.cpu_percent(1)
-                    self.hardware.net_up, self.hardware.net_down = get_network_speed(1)
-                    log("Observed")
-                except Exception as e:
-                    log(f"Failed to observe: {e}")
-
-        threading.Thread(target=_observe).start()
 
     def remove(self, client_id) -> requests.Response:
         return self.api.delete("/host", data={"id": client_id})
