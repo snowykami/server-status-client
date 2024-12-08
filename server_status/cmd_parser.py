@@ -3,7 +3,7 @@ import socket
 
 from arclet.alconna import Alconna, Subcommand, Option, Args, MultiVar
 
-server_status_alc = Alconna(
+server_status_alc = Alconna(     # type: ignore
     "server_status",
     Args["server", str]["token", str]["id", str],
     Subcommand(

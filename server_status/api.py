@@ -191,8 +191,12 @@ class Client:
         )
 
     def start(self):
+        log("Starting client")
         threading.Thread(target=self._start_obs, daemon=True).start()
         threading.Thread(target=self._start_post, daemon=True).start()
+        
+        while True:
+            time.sleep(1)
 
     def _start_obs(self):
         """启动监控记录线程"""
