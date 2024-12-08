@@ -214,15 +214,16 @@ class Client:
 
                         if (
                             (
-                                platform.system() == "linux"
+                                platform.system() == "Linux"
                                 and (
                                     part.mountpoint.startswith(
                                         excluded_partition_prefix
                                     )
                                 )
                             )
-                            or (
-                                platform.system() == "darwin"
+                            or 
+                            (
+                                platform.system() == "Darwin"
                                 and not part.mountpoint.startswith(
                                     include_partition_prefix_mac
                                 )
