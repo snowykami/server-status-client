@@ -224,9 +224,9 @@ class Client:
                             or 
                             (
                                 platform.system() == "Darwin"
-                                and (not part.mountpoint.startswith(
+                                and ((not part.mountpoint.startswith(
                                     include_partition_prefix_mac
-                                ) or part.mountpoint == "/")
+                                )) or not part.mountpoint == "/")
                             )
                             or usage.total == 0
                         ):
