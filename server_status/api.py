@@ -17,6 +17,11 @@ excluded_partition_prefix = (
     "/dev",
     "/tmp",
     "/snap",
+
+    "/System",
+    "/Applications",
+    "/private",
+    "/Library",
 )
 
 include_partition_prefix_mac = ("/Volumes")
@@ -214,21 +219,13 @@ class Client:
 
                         if (
                             (
-                                platform.system() == "Linux"
+                                platform.system() in ("Linux", "Darwin")
                                 and (
                                     part.mountpoint.startswith(
                                         excluded_partition_prefix
                                     )
                                 )
                             )
-                            or 
-                            (
-                                platform.system() == "Darwin"
-                                and ((not part.mountpoint.startswith(
-                                    include_partition_prefix_mac
-                                )) or not part.mountpoint == "/")
-                            )
-                            or usage.total == 0
                         ):
                             continue
 
