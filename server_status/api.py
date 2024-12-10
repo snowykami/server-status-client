@@ -19,7 +19,7 @@ excluded_partition_prefix = (
     "/snap",
 )
 
-include_partition_prefix_mac = ("/Volumes",)
+include_partition_prefix_mac = ("/Volumes")
 
 os_name = ""  # linux下为发行版名称，windows下为Windows， macOS下为Darwin
 os_version = ""  # linux下为发行版版本，windows下为Windows版本
@@ -224,9 +224,9 @@ class Client:
                             or 
                             (
                                 platform.system() == "Darwin"
-                                and not part.mountpoint.startswith(
+                                and (not part.mountpoint.startswith(
                                     include_partition_prefix_mac
-                                )
+                                ) or part.mountpoint == "/")
                             )
                             or usage.total == 0
                         ):
